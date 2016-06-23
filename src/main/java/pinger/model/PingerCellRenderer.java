@@ -26,7 +26,8 @@ public class PingerCellRenderer extends AbstractCellEditor implements TableCellR
 
     @Override
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-        renderer.setHost((Host) value);
+        Host host = (Host) value;
+        renderer.setHost(host);
         return renderer;
     }
 

@@ -18,7 +18,7 @@ public class Bulb extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        String name = "resources//" + (isAvailable ? "green.jpg" : "red.jpg");
+        String name = "src//main//resources//" + (isAvailable ? "green.jpg" : "red.jpg");
         BufferedImage image = null;
         try {
             image = ImageIO.read(new File(name));

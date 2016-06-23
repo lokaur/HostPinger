@@ -3,6 +3,7 @@ package pinger;
 import pinger.controller.PingerController;
 
 import javax.swing.*;
+import java.util.Locale;
 
 public class HostPinger {
     public static void main(String[] args) {

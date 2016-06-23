@@ -15,15 +15,15 @@ public class PingCellPanel extends JPanel {
 
     private JLabel uriLabel;
 
-    private JLabel portLabel;
-
     private Bulb availableBulb;
 
     public PingCellPanel() {
-        setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+        setLayout(new BorderLayout());
+        setBackground(new Color(214, 217, 223));
+        JPanel left = new JPanel(new FlowLayout());
+        JPanel right = new JPanel(new FlowLayout());
         nameLabel = new JLabel("");
         uriLabel = new JLabel("");
-        portLabel = new JLabel("");
         availableBulb = new Bulb(false);
         JButton removeButton = new JButton("Удалить");
         removeButton.addActionListener(e -> {
@@ -42,27 +42,28 @@ public class PingCellPanel extends JPanel {
             table.setModel(model);
         });
 
-        add(new JLabel("Имя: "));
-        add(nameLabel);
-        add(new JLabel(" Адрес: "));
-        add(uriLabel);
-        add(new JLabel(" Порт: "));
-        add(portLabel);
+        left.add(new JLabel("Имя: "));
+        left.add(nameLabel);
+        left.add(new JLabel(" Адрес: "));
+        left.add(uriLabel);
+
         availableBulb.setMaximumSize(availableBulb.getPreferredSize());
-        add(availableBulb);
-        add(Box.createHorizontalStrut(100));
-        add(removeButton);
+
+        right.add(availableBulb);
+        right.add(removeButton);
+
+        add(left, BorderLayout.LINE_START);
+        add(right, BorderLayout.LINE_END);
     }
 
     public void setHost(Host host) {
+        System.out.println(host.getName());
         nameLabel.setText(host.getName());
         uriLabel.setText(host.getUri());
-        portLabel.setText(String.valueOf(host.getPort()));
         availableBulb.setAvailable(host.isAvailable());
     }
 
     public Host getHost() {
-        return new Host(nameLabel.getText(), uriLabel.getText(), Integer.valueOf(portLabel.getText()),
-                availableBulb.isAvailable());
+        return new Host(nameLabel.getText(), uriLabel.getText(),  availableBulb.isAvailable());
     }
 }

@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="icmp4j-all">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/libs/icmp4j-all.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

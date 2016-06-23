@@ -49,7 +49,6 @@ public class PingerController {
 
     public void setHostsUnavailable() {
         try {
-            System.out.println(getClass().getProtectionDomain().getCodeSource().getLocation());
             this.hosts = JsonWriter.loadHostsList();
             for (Host host : hosts) {
                 host.setAvailable(false);
@@ -74,14 +73,5 @@ public class PingerController {
         } catch (Exception ignored) {}
 
         return hosts;
-    }
-
-    public Object[][] getRowData() {
-        Object[][] rowData = new Object[hosts.size()][];
-//        for (int i = 0; i < hosts.size(); i++) {
-            rowData[0] = hosts.get(0).toRowData();
-//        }
-
-        return rowData;
     }
 }

@@ -14,7 +14,6 @@ import java.net.MalformedURLException;
 public class AddHost extends JFrame {
     private JTextField nameField;
     private JTextField uriField;
-    private JTextField portField;
     private JButton buttonOk;
     private JButton buttonApply;
     private JButton buttonEscape;
@@ -48,7 +47,6 @@ public class AddHost extends JFrame {
 
     private void clearFields() {
         nameField.setText("");
-        portField.setText("80");
         uriField.setText("");
     }
 
@@ -64,27 +62,18 @@ public class AddHost extends JFrame {
 
             String uri = uriField.getText();
 
-            int port = Integer.valueOf(portField.getText());
-            if (port <= 0 || port > 9999) {
-                errorLabel.setText("'Порт' должен иметь значение от 1 до 9999");
-                return false;
-            }
-
-            JsonWriter.addHost(new Host(name, uri, port));
-        } catch (NumberFormatException e) {
-            errorLabel.setText("'Порт' должен быть числом");
-            return false;
+            JsonWriter.addHost(new Host(name, uri));
         } catch (MalformedURLException e) {
-            errorLabel.setText("Введите валидный адрес");
+            errorLabel.setText("Введите правильный адрес.");
             return false;
         } catch (HostExistsException e) {
-            errorLabel.setText("Хост с таким адресом и портом уже существует");
+            errorLabel.setText("Хост с таким адресом уже существует.");
             return false;
         } catch (IOException e) {
-            errorLabel.setText("Произошла ошибка чтения файла");
+            errorLabel.setText("Произошла ошибка чтения файла c диска. Проверьте расположение файла.");
             return false;
         } catch (ParseException e) {
-            errorLabel.setText("Произошла ошибка распознавания файла");
+            errorLabel.setText("Произошла ошибка чтения файла.");
             return false;
         }
 

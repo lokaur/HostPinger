@@ -5,15 +5,13 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import pinger.exceptions.HostExistsException;
 
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
 public class JsonWriter {
-    private static final String HOSTS = "resources//hosts.json";
+    private static final String HOSTS = "src//main//resources//hosts.json";
 
     private static JSONObject GetJsonObject() throws ParseException, IOException {
         return (JSONObject) new JSONParser().parse(new FileReader(HOSTS));
@@ -24,17 +22,18 @@ public class JsonWriter {
 
         if (IsExists(host))
             throw new HostExistsException();
-
+        System.out.println(host.getName());
+        System.out.println(host.toJson());
         jsonObject.put(jsonObject.size(), host.toJson());
 
         saveJsonToFile(jsonObject);
     }
 
     private static void saveJsonToFile(JSONObject jsonObject) throws IOException {
-        FileWriter fw = new FileWriter(HOSTS);
-        fw.write(jsonObject.toJSONString());
-        fw.flush();
-        fw.close();
+        try (Writer out = new BufferedWriter(new OutputStreamWriter(
+                new FileOutputStream(HOSTS), "UTF-8"))) {
+            out.write(jsonObject.toJSONString());
+        }
     }
 
     public static void updateHost(Host oldHost) throws Exception {
@@ -43,7 +42,6 @@ public class JsonWriter {
         hosts.stream().filter(host -> host.equals(oldHost)).forEach(host -> {
             host.setAvailable(oldHost.isAvailable());
             host.setName(oldHost.getName());
-            host.setPort(oldHost.getPort());
             host.setUri(oldHost.getUri());
         });
 

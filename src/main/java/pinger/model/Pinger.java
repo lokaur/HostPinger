@@ -1,32 +1,28 @@
 package pinger.model;
 
+import org.icmp4j.IcmpPingRequest;
+import org.icmp4j.IcmpPingResponse;
+import org.icmp4j.IcmpPingUtil;
 import pinger.view.MainView;
 
-import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.net.Socket;
 import java.util.ArrayList;
 
 public class Pinger {
-    private int timeout = 500;
-
-    private ArrayList<Host> hosts;
-
-    public Pinger(ArrayList<Host> hosts) {
-        this.hosts = hosts;
-    }
-
     public static void checkHosts(MainView view, ArrayList<Host> hosts) throws Exception {
         for (Host host : hosts) {
             try {
-                Socket socket = new Socket();
-                socket.connect(new InetSocketAddress(host.getUri(), host.getPort()), 1000);
-                if (!host.isAvailable()) {
-                    host.setAvailable(true);
+                final IcmpPingRequest request = IcmpPingUtil.createIcmpPingRequest();
+                request.setHost(host.getUri());
+                final IcmpPingResponse response = IcmpPingUtil.executePingRequest (request);
+                boolean isAvailable = response.getSuccessFlag();
+
+                if (host.isAvailable() != isAvailable) {
+                    host.setAvailable(isAvailable);
                     JsonWriter.updateHost(host);
                     view.reload();
                 }
-            } catch (IOException e) {
+
+            } catch (final Throwable t) {
                 if (host.isAvailable()) {
                     host.setAvailable(false);
                     JsonWriter.updateHost(host);
